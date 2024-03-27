@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<Import Project="..\common.props" />
+
+	<PropertyGroup>
+		<PackageIcon>folders.png</PackageIcon>
+		<PackageIconUrl />
+	</PropertyGroup>
+	<ItemGroup>
+	  <PackageReference Include="AutoFilterer" Version="2.13.0" />
+	  <PackageReference Include="Microsoft.Data.SqlClient" Version="5.1.1" />
+	  <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="7.0.8" />
+	</ItemGroup>
+	<ItemGroup>
+	  <None Include="folders.png">
+	    <Pack>True</Pack>
+	    <PackagePath></PackagePath>
+	  </None>
+	</ItemGroup>
+
+</Project>

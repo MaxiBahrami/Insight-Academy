@@ -1,0 +1,12 @@
+{
+  "profiles": {
+    "EasyRepository.EFCore.Generic": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "applicationUrl": "https://localhost:57360;http://localhost:57361"
+    }
+  }
+}

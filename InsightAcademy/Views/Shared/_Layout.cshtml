@@ -1,0 +1,32 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>KnowNow</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+    <link rel="icon" href="images/favicon.png" type="image/x-icon">
+    <link rel="stylesheet" href="~/css/bootstrap.min.css"> <!-- Adjust path if necessary -->
+    <link rel="stylesheet" href="~/css/feather.css"> <!-- Adjust path if necessary -->
+    <link rel="stylesheet" href="~/css/fontawesome/fontawesome.css"> <!-- Adjust path if necessary -->
+    <link rel="stylesheet" href="~/css/select2.min.css"> <!-- Adjust path if necessary -->
+    <link rel="stylesheet" href="~/css/splide.min.css"> <!-- Adjust path if necessary -->
+    <link rel="stylesheet" href="~/css/main.css"> <!-- Adjust path if necessary -->
+</head>
+<body>
+    <div class="page-wrapper container">
+        @await Html.PartialAsync("~/Views/Shared/PartialViews/Header.cshtml")
+        <div role="main" class="page-content">
+            @RenderBody()
+        </div>
+        @await Html.PartialAsync("~/Views/Shared/PartialViews/Footer.cshtml")
+    </div>
+    @await Html.PartialAsync("~/Views/Shared/Partialviews/Scripts.cshtml")
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
+
+

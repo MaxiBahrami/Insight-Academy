@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <Import Project="..\common.props" />
+    <PropertyGroup>
+        <PackageIcon>folders.png</PackageIcon>
+        <PackageIconUrl />
+    </PropertyGroup>
+    <ItemGroup>
+        <None Include="folders.png">
+            <Pack>True</Pack>
+            <PackagePath></PackagePath>
+        </None>
+    </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="Ardalis.Specification.EntityFrameworkCore" Version="7.0.0" />
+    </ItemGroup>
+</Project>
