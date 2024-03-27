@@ -20,9 +20,10 @@
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.19.6" />
   </ItemGroup>
-  <ItemGroup>   
-    <ProjectReference Include="..\..\InsightAcademy\DAL\EasyRepository.EFCore.Abstractions\EasyRepository.EFCore.Abstractions.csproj" />
-    <ProjectReference Include="..\..\InsightAcademy\DAL\EasyRepository.EFCore.Ardalis.Specification\EasyRepository.EFCore.Ardalis.Specification.csproj" />
-    <ProjectReference Include="..\..\InsightAcademy\DAL\EasyRepository.EFCore.Generic\EasyRepository.EFCore.Generic.csproj" />
+
+  <ItemGroup>
+    <ProjectReference Include="..\DAL\EasyRepository.EFCore.Abstractions\EasyRepository.EFCore.Abstractions.csproj" />
+    <ProjectReference Include="..\DAL\EasyRepository.EFCore.Ardalis.Specification\EasyRepository.EFCore.Ardalis.Specification.csproj" />
+    <ProjectReference Include="..\DAL\EasyRepository.EFCore.Generic\EasyRepository.EFCore.Generic.csproj" />
   </ItemGroup>
 </Project>

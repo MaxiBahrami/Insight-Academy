@@ -23,6 +23,19 @@ namespace InsightAcademy.Controllers
             return View();
         }
 
+        public IActionResult TutorDetails()
+        {
+            return View();
+        }
+        public IActionResult Blogs()
+        {
+            return View();
+        }
+
+        public IActionResult SearchListing()
+        {
+            return View();
+        }
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
