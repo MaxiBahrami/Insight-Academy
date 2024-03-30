@@ -16,7 +16,19 @@ namespace InsightAcademy.Controllers
         public IActionResult Index()
         {
             return View();
-        } 
+        }
+        public IActionResult HowItWorks()
+        {
+            return View();
+        }
+        public IActionResult Packages()
+        {
+            return View();
+        }
+        public IActionResult Profile()
+        {
+            return View();
+        }
 
         public IActionResult Privacy()
         {
@@ -31,11 +43,19 @@ namespace InsightAcademy.Controllers
         {
             return View();
         }
-
+        public IActionResult Blogs2()
+        {
+            return View();
+        }
         public IActionResult SearchListing()
         {
             return View();
         }
+        public IActionResult SearchListing2()
+        {
+            return View();
+        }
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
