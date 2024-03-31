@@ -1,4 +1,5 @@
-﻿	<div class="tu-main-login">
+﻿<link href="~/css/customcss.css" rel="stylesheet" />
+<div class="tu-main-login">
 		<div class="tu-login-left">
 			<strong>
 				<a href="/"><img src="images/login/logo_white.png" alt="images"></a>
@@ -16,73 +17,235 @@
 				<h2>Welcome!</h2>
 				<h3>It’s really nice to see you</h3>
 			</div>
-			<form class="tu-themeform tu-login-form">
-				<fieldset>
-					<div class="tu-themeform__wrap">
-						<div class="form-group-wrap">
-							<div class="form-group">
-								<div class="tu-placeholderholder">
-									<input type="text" class="form-control" required="" placeholder="Full Name">
-									<div class="tu-placeholder">
-										<span>First name</span>
-										<em>*</em>
-									</div>
-								</div>
-							</div>
-							<div class="form-group">
-								<div class="tu-placeholderholder">
-									<input type="text" class="form-control" required="" placeholder="Last name">
-									<div class="tu-placeholder">
-										<span>Last name</span>
-										<em>*</em>
-									</div>
-								</div>
-							</div>
-							<div class="form-group">
-								<div class="tu-placeholderholder">
-									<input type="email" class="form-control" required="" placeholder="Email address">
-									<div class="tu-placeholder">
-										<span>Your email address</span>
-										<em>*</em>
-									</div>
-								</div>
-							</div>
-							<div class="form-group">
-								<div class="tu-placeholderholder">
-									<input type="password" class="form-control" required="" placeholder="password">
-									<div class="tu-placeholder">
-										<span>Enter password</span>
-										<em>*</em>
-									</div>
-								</div>
-							</div>
-							<div class="form-group">
-								<a href="profile-setting-a.html" class="tu-primbtn-lg"><span>Join now</span><i class="icon icon-arrow-right"></i></a>
-							</div>
-							<div class="form-group">
-								<div class="tu-check tu-signup-check">
-									<input type="checkbox" id="expcheck2" name="expcheck">
-									<label for="expcheck2"><span>I have read and agree to all <a href="javascript:void(0);">Terms &amp; conditions</a></span></label>
-								</div>
-							</div>
-							<div class="form-group">
-								<div class="tu-optioanl-or">
-									<span>OR</span>
-								</div>
-							</div>
-							<div class="form-group">
-								<a href="https://accounts.google.com/signin/v2/identifier?flowName=GlifWebSignIn&amp;flowEntry=ServiceLogin" target="_blank" class="tu-btn-signup">
-									<img src="images/google.png" alt="images">
-									Sign in with Google
-								</a>
-							</div>
-							<div class="tu-lost-password form-group">
-								<a href="login.html">Login now</a>
-								<a href="lost-password.html" class="tu-password-clr_light">Lost password?</a>
-							</div>
-						</div>
-					</div>
-				</fieldset>
-			</form>
+        <form class="tu-themeform tu-login-form signupform" enctype="multipart/form-data" asp-controller="Authentication" asp-action="Signup">
+            <fieldset>
+                <div class="tu-themeform__wrap">
+                    <div class="form-group-wrap">
+                        <div class="form-group">
+                            <!-- Profile Image -->
+                            <div class="tu-placeholderholder">
+                                <input id="profilepic" type="file" class="form-control" placeholder="Profile Image" name="ProfileImage" onchange="previewProfileImage(this)" accept=".png, .jpg, .jpeg">
+                                <div class="d-flex justify-content-center align-items-center" style="width: 100px; height: 100px;">
+                                    <img id="profileimage" class="img-thumbnail" style="max-width: 100%; max-height: 150%;" />
+                                </div>
+                            </div>
+                        </div>
+                        
+                    
+                        <!-- Full Name -->
+                        <div class="form-group">
+                            <div class="tu-placeholderholder">
+                                <input type="text" class="form-control" required="" placeholder="Full Name" name="FullName">
+                                <div class="tu-placeholder">
+                                    <span>Full name</span>                                    
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="tu-placeholderholder">
+                                <input type="text" class="form-control" required="" placeholder="Username" name="Username">
+                                <div class="tu-placeholder">
+                                    <span>Username</span>
+                                    <em>*</em>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Email Address -->
+                        <div class="form-group">
+                            <div class="tu-placeholderholder">
+                                <input id="useremail" type="email" class="form-control" required="" placeholder="Email address" name="Email">
+                                <div class="tu-placeholder">
+                                    <span>Email address</span>
+                                    <em>*</em>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div id="emailError" style="color: red; display: none;">Invalid email</div>
+                        <!-- Password -->
+                        <div class="form-group">
+                            <div class="tu-placeholderholder">
+                                <input id="userpassword" type="password" class="form-control" required="" placeholder="Password" name="Password">
+                                <div class="tu-placeholder">
+                                    <span>Password</span>
+                                    <em>*</em>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="message" style="display:none">
+                            <p id="letter" class="invalid">A lowercase letter</p>
+                            <p id="capital" class="invalid">A capital (uppercase) letter</p>
+                            <p id="number" class="invalid">A number</p>
+                            <p id="specialchar" class="invalid">A Special Character</p>
+                            <p id="length" class="invalid">Minimum 8 characters</p>
+                        </div>
+                        <!-- Role -->
+                        <div class="form-group">
+                            <div class="tu-placeholderholder">
+                                <select class="form-control" required="" name="Role">
+                                    <option value="">Select Role</option>
+                                    <option value="10">Student</option>
+                                    <option value="20">Teacher</option>
+                                    <option value="30">Admin</option>
+                                </select>                           
+                            </div>
+
+                        </div>
+                   
+                        <!-- Phone -->
+                        <div class="form-group">
+                            <div class="tu-placeholderholder">
+                                <input type="text" class="form-control" required="" placeholder="Phone" name="Phone">
+                                <div class="tu-placeholder">
+                                    <span>Phone</span>                                    
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Website -->
+                        <div class="form-group">
+                            <div class="tu-placeholderholder">
+                                <input type="text" class="form-control" required="" placeholder="Website" name="Website">
+                                <div class="tu-placeholder">
+                                    <span>Website</span>
+                                   
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="tu-placeholderholder">
+                                <input type="text" class="form-control" required="" placeholder="Street Address" name="StreetAddress">
+                                <div class="tu-placeholder">
+                                    <span>Street Address</span>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                        <!-- City -->
+                        <div class="form-group">
+                            <div class="tu-placeholderholder">
+                                <input type="text" class="form-control" required="" placeholder="City" name="City">
+                                <div class="tu-placeholder">
+                                    <span>City</span>
+                                  
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Country -->
+                        <div class="form-group">
+                            <div class="tu-placeholderholder">
+                                <input type="text" class="form-control" required="" placeholder="Country" name="Country">
+                                <div class="tu-placeholder">
+                                    <span>Country</span>
+                                 
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Join Button -->
+                        <div class="form-group">
+                            <button class="tu-primbtn-lg" type="submit"><span>Join now</span><i class="icon icon-arrow-right"></i></button>
+                        </div>                       
+                        <div class="form-group">
+                            <div class="tu-check tu-signup-check">
+                                <input type="checkbox" id="expcheck2" name="expcheck">
+                                <label for="expcheck2"><span>I have read and agree to all <a href="javascript:void(0);">Terms &amp; conditions</a></span></label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+        </form>
+
 		</div>
 	</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+ <script>
+    $(document).ready(function() {
+        var myInput = document.getElementById("userpassword");
+        var letter = document.getElementById("letter");
+        var capital = document.getElementById("capital");
+        var number = document.getElementById("number");
+        var specialchar = document.getElementById("specialchar");
+        var length = document.getElementById("length");
+        $('#userpassword').on('input', function () {
+            // Validate lowercase letters
+            var lowerCaseLetters = /[a-z]/g;
+            if (myInput.value.match(lowerCaseLetters)) {
+                letter.classList.remove("invalid");
+                letter.classList.add("valid");
+            } else {
+                letter.classList.remove("valid");
+                letter.classList.add("invalid");
+            }
+            // Validate capital letters
+            var upperCaseLetters = /[A-Z]/g;
+            if (myInput.value.match(upperCaseLetters)) {
+                capital.classList.remove("invalid");
+                capital.classList.add("valid");
+            } else {
+                capital.classList.remove("valid");
+                capital.classList.add("invalid");
+            }
+            // Validate numbers
+            var numbers = /[0-9]/g;
+            if (myInput.value.match(numbers)) {
+                number.classList.remove("invalid");
+                number.classList.add("valid");
+            } else {
+                number.classList.remove("valid");
+                number.classList.add("invalid");
+            }
+            var numbersAndSpecialChars = @Html.Raw("/[@#$%^&*!]/g"); // Include special characters you want to allow
+
+            if (myInput.value.match(numbersAndSpecialChars)) {
+                specialchar.classList.remove("invalid");
+                specialchar.classList.add("valid");
+            } else {
+                specialchar.classList.remove("valid");
+                specialchar.classList.add("invalid");
+            }
+   
+
+            // Validate length
+            if (myInput.value.length >= 8) {
+                length.classList.remove("invalid");
+                length.classList.add("valid");
+            } else {
+                length.classList.remove("valid");
+                length.classList.add("invalid");
+            }
+        });
+
+        $('#useremail').on('input', function() {
+            var email = $(this).val();
+            console.log(email);
+            if (!isValidEmail(email)) {
+                $('#emailError').show();
+            } else {
+                $('#emailError').hide();
+            }
+        });
+        myInput.onfocus = function () {
+            document.getElementById("message").style.display = "block";
+        }
+        myInput.onblur = function () {
+            document.getElementById("message").style.display = "none";
+        }
+
+        function isValidEmail(email) {
+            var regexPattern = '@Html.Raw("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$")';
+            var regex = new RegExp(regexPattern);
+            return regex.test(email);
+        }
+
+      
+
+        function previewProfileImage(input) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                document.getElementById('profileimage').src = e.target.result;
+            }
+            reader.readAsDataURL(input.files[0]); // convert to base64 string
+        }
+    });
+</script>

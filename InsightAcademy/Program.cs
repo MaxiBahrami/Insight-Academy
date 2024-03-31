@@ -1,5 +1,6 @@
 using EasyRepository.EFCore.Generic;
 using InsightAcademy.Context;
+using InsightAcademy.Helper;
 using InsightAcademy.Services;
 using Microsoft.EntityFrameworkCore;
 
@@ -8,7 +9,10 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddTransient<UnitOfWork>();
-builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddTransient<Usershelper>();
+builder.Services.AddTransient<IAuthService, AuthService>();
+builder.Services.AddTransient<IStmpServices, StmpServices>();
+builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddDbContext<InsightAcademy_DBContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.ApplyEasyRepository<InsightAcademy_DBContext>();

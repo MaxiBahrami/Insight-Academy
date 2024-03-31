@@ -10,16 +10,19 @@ namespace InsightAcademy.Services
     {
         string GenerateJwtToken(User user);
         bool IsTokenValid(string token);
+        public void ClearHttpContextItems();
     }
     // Implement the interface in a service class
     public class AuthService : IAuthService
     {
         private readonly IConfiguration _configuration;
+        private readonly IHttpContextAccessor _context;
 
         // Use dependency injection to get the configuration
-        public AuthService(IConfiguration configuration)
+        public AuthService(IConfiguration configuration, IHttpContextAccessor context)
         {
             _configuration = configuration;
+            _context = context;
         }
 
         public string GenerateJwtToken(User user)
@@ -41,10 +44,14 @@ namespace InsightAcademy.Services
                 expires: expires,
                 signingCredentials: creds
             );
-
+            _context.HttpContext.Items["UserId"] = user.Id.ToString();
+            _context.HttpContext.Items["Createdby"]=user.CreatedBy.ToString();
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
-
+        public void ClearHttpContextItems()
+        {
+            _context.HttpContext.Items.Clear();
+        }
         public bool IsTokenValid(string token)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
@@ -66,5 +73,6 @@ namespace InsightAcademy.Services
                 return false;
             }
         }
+       
     }
 }
