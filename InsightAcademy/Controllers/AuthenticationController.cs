@@ -93,7 +93,6 @@ namespace InsightAcademy.Controllers
                     }
                     else
                     {
-                        
                         var token = _authService.GenerateJwtToken(dbUser);
                         var claimss = new List<Claim>
                         {
@@ -201,7 +200,7 @@ namespace InsightAcademy.Controllers
         {
             _authService.ClearHttpContextItems();
             HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-            return RedirectToAction("Login");
+            return RedirectToAction("Login", "Authentication");
         }
 
     }

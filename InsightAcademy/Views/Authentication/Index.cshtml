@@ -158,7 +158,7 @@
 		</div>
 	</div>
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
  <script>
     $(document).ready(function() {
         var myInput = document.getElementById("userpassword");
@@ -240,12 +240,13 @@
 
       
 
-        function previewProfileImage(input) {
-            var reader = new FileReader();
-            reader.onload = function (e) {
-                document.getElementById('profileimage').src = e.target.result;
-            }
-            reader.readAsDataURL(input.files[0]); // convert to base64 string
-        }
+      
     });
+    function previewProfileImage(input) {
+        var reader = new FileReader();
+        reader.onload = function (e) {
+            document.getElementById('profileimage').src = e.target.result;
+        }
+        reader.readAsDataURL(input.files[0]); // convert to base64 string
+    }
 </script>

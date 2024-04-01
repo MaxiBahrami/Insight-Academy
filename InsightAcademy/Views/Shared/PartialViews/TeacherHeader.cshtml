@@ -1,0 +1,114 @@
+﻿<header class="tu-header">
+    <nav class="navbar navbar-expand-xl tu-navbar">
+        <div class="container-fluid">
+            <strong>
+                <a class="navbar-brand" asp-controller="Home" asp-action="index"><img src="~/images/logo.png" alt="Logo"></a>
+            </strong>
+            <button class="tu-menu" aria-label="Main Menu" data-bs-target="#navbarSupportedContent" data-bs-toggle="collapse">
+                <i class="icon icon-menu"></i>
+            </button>
+            <div class="collapse navbar-collapse tu-themenav" id="navbarSupportedContent">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="Home" asp-action="SearchListing">
+                            Online classes
+                            <span class="tu-tag">NEW</span>
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="Home" asp-action="SearchListing2">Learning material<span class="tu-tag tu-bggreen">FREE</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="Home" asp-action="Index" asp-fragment="tu-sucesstorsection">Success stories</a>
+                    </li>
+
+
+                                <li class="menu-item-has-children nav-item">
+                    <a class="active" href="javascript:void(0);">Pages</a>
+                    <ul class="sub-menu">
+                    <li>
+                    <a class="nav-link" asp-controller="Home" asp-action="index">Home</a>
+                    </li>
+                    <li>
+
+                    <a class="nav-link" asp-controller="Home" asp-action="SearchListing">Provider listings</a>
+                    <ul class="sub-menu">
+                    <li>
+                    <a href="search-listing.html">Provider listings v1</a>
+                    </li>
+                    <li>
+                    <a href="search-listing-two.html">Provider listings v2</a>
+                    </li>
+                    </ul>
+                    </li>
+                    <li>
+                    <a class="nav-link" asp-controller="Home" asp-action="TutorDetails">Tutor Detail</a>
+                    </li>
+                    <li>
+                    <a class="nav-link" asp-controller="Home" asp-action="Blogs">Blogs</a>
+
+                    </li>
+                    <li class="menu-item-has-children">
+                    <a href="javascript:void(0);">Other pages</a>
+                    <ul class="sub-menu">
+                    <li>
+                    <a class="nav-link" asp-controller="Home" asp-action="HowItWorks">How it work</a>
+                    </li>
+                    <li>
+                    <a class="nav-link" asp-controller="Home" asp-action="Packages">Packges</a>
+                    </li>
+                    </ul>
+                    </li>
+                    </ul>
+                    </li>
+
+                </ul>
+            </div>
+
+            <ul class="nav-item tu-afterlogin">
+                <li>
+
+                    <a class="nav-link" asp-controller="Home" asp-action="index"><span class="icon icon-message-square"><i class="tu-messagenoti">4</i></span></a>
+                </li>
+                <li>
+                    <a class="nav-link" asp-controller="Home" asp-action="index"><span class="icon icon-bell"><i class="tu-messagenoti">3</i></span></a>
+                </li>
+                <li class="menu-item-has-children">
+                    <strong><a class="nav-link"><img src="~/images/login.png" alt="image-description"></a></strong>
+                    <ul class="sub-menu">
+                        <li>
+                            <a class="nav-link" asp-controller="Home" asp-action="Profile">
+                                <i class="icon icon-user"></i>Personal details
+                            </a>
+                        </li>
+
+                        <li>
+                            <a class="nav-link" asp-controller="Home" asp-action="Profile">
+
+                                <i class="icon icon-phone"></i>Contact details
+                            </a>
+                        </li>
+
+                        <li>
+                            <a class="nav-link" asp-controller="Home" asp-action="Blogs2"><i class="icon icon-book"></i>Education</a>
+                        </li>
+                        <li>
+                            <a class="nav-link" asp-controller="Home" asp-action="TutorDetails"><i class="icon icon-book-open"></i>Subjects I can teach</a>
+                        </li>
+                        <li>
+                            <a class="nav-link" asp-controller="Home" asp-action="Profile"><i class="icon icon-image"></i>Media gallery</a>
+                        </li>
+                        <li>
+                            <a class="nav-link" asp-controller="Authentication" asp-action="Signout">
+                                <i class="fas fa-sign-out-alt mr-1"></i>Sign Out
+                            </a>
+                        </li>
+
+                    </ul>
+                </li>
+            </ul>
+
+        </div>
+    </nav>
+</header>
