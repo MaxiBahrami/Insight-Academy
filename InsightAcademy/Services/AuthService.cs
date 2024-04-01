@@ -1,4 +1,6 @@
 ﻿using InsightAcademy.Entities;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -27,16 +29,16 @@ namespace InsightAcademy.Services
 
         public string GenerateJwtToken(User user)
         {
+            _context.HttpContext.Items["UserId"] = "";
+            _context.HttpContext.Items["Createdby"] = "";
             var claims = new[]
             {
                 new Claim(JwtRegisteredClaimNames.Sub, user.Email),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
             };
-
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
             var expires = DateTime.Now.AddDays(Convert.ToDouble(_configuration["Jwt:ExpireDays"]));
-
             var token = new JwtSecurityToken(
                 _configuration["Jwt:Issuer"],
                 _configuration["Jwt:Audience"],
@@ -45,7 +47,7 @@ namespace InsightAcademy.Services
                 signingCredentials: creds
             );
             _context.HttpContext.Items["UserId"] = user.Id.ToString();
-            _context.HttpContext.Items["Createdby"]=user.CreatedBy.ToString();
+            _context.HttpContext.Items["Createdby"] = user.CreatedBy.ToString();
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
         public void ClearHttpContextItems()

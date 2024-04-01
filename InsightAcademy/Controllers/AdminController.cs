@@ -1,9 +1,11 @@
 ﻿using EasyRepository.EFCore.Generic;
 using InsightAcademy.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace InsightAcademy.Controllers
 {
+    [Authorize]
     public class AdminController : Controller
     {
         private readonly UnitOfWork _unitOfWork;

@@ -10,6 +10,9 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Data;
 using System.Net.Mail;
 using System.Net;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication;
+using System.Security.Claims;
 
 namespace InsightAcademy.Controllers
 {
@@ -90,9 +93,31 @@ namespace InsightAcademy.Controllers
                     }
                     else
                     {
+                        
                         var token = _authService.GenerateJwtToken(dbUser);
-                        // Redirect to the desired page upon successful authentication
-                        return RedirectToAction("Index", "Home");
+                        var claimss = new List<Claim>
+                        {
+                         new Claim(ClaimTypes.NameIdentifier, dbUser.Id.ToString()),
+                         new Claim(ClaimTypes.Name, dbUser.FullName),
+                         new Claim(ClaimTypes.Role, dbUser.Role.ToString())
+                         };
+                        var claimsIdentity = new ClaimsIdentity(claimss, CookieAuthenticationDefaults.AuthenticationScheme);
+                        var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
+                        HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, claimsPrincipal);
+                        if (dbUser.Role == eRole.Admin)
+                        {
+                            return RedirectToAction("Index", "Admin");
+                        }
+                        else if(dbUser.Role == eRole.Student)
+                        {
+                            return RedirectToAction("Index", "Student");
+                        }
+                        else if (dbUser.Role == eRole.Teacher)
+                        {
+                            return RedirectToAction("Index", "Teacher");
+                        }
+
+                        return RedirectToAction("Login", "Authentication");
                     }
                 }
                 else
@@ -107,6 +132,7 @@ namespace InsightAcademy.Controllers
 
             // If any errors occurred, return the view with the ModelState containing the error messages
             return View(user);
+
         }
         public IActionResult ResetPassword(int userid)
         {
@@ -174,6 +200,7 @@ namespace InsightAcademy.Controllers
 		public IActionResult Signout()
         {
             _authService.ClearHttpContextItems();
+            HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             return RedirectToAction("Login");
         }
 
