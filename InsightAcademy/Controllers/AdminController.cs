@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace InsightAcademy.Controllers
 {
-    [Authorize]
+    [Authorize(Roles ="Admin")]
     public class AdminController : Controller
     {
         private readonly UnitOfWork _unitOfWork;
