@@ -29,12 +29,18 @@ namespace InsightAcademy.Helper
         }
         public byte[] ConvertIFormFileToByteArray(IFormFile file)
         {
+            if (file == null)
+            {
+                return new byte[0]; // Return an empty byte array if file is null
+            }
+
             using (MemoryStream memoryStream = new MemoryStream())
             {
                 file.CopyTo(memoryStream);
                 return memoryStream.ToArray();
             }
         }
+
 
 
     }

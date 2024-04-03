@@ -1,0 +1,17 @@
+﻿@{
+    string message = TempData["message"] as string;
+}
+
+@if (!string.IsNullOrEmpty(message))
+{
+    <div class="popover-container">
+        <div class="alert alert-popover alert-dismissible" role="alert">
+           <div>
+            @message
+
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+           </div>
+        </div>
+    </div>
+    }
+

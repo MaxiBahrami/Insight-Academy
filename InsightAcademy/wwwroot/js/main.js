@@ -432,7 +432,7 @@ jQuery(window).on("load", function() {
    jQuery(".tu-iconheart,.tu-linkheart").on("click", function() {
     jQuery(this).children("i.icon-heart").addClass("tu-colorred");
     jQuery(this).children("span").text("Saved");
-  });
+   });
   // remove
   jQuery(".tu-searchtags li span a, .tu-labels li span a").on("click", function() {
     jQuery(this).closest("li").remove();

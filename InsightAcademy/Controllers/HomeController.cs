@@ -14,7 +14,7 @@ namespace InsightAcademy.Controllers
         }
 
         public IActionResult Index()
-        {
+        {          
             return View();
         }
         public IActionResult HowItWorks()

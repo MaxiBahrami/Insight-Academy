@@ -41,12 +41,12 @@ namespace InsightAcademy.Services
 						smtp.EnableSsl = true;
 						smtp.Send(mail);
 					}
-					message = "Email sent successfully!";
+					message = "Email sent successfully! to "+email.ToString()+" Click the Link and Follow The Instructions";
 				}
 			}
-			catch (Exception ex)
+			catch 
 			{				
-				message = "Failed to send email: " + ex.Message;
+				message = "Failed to send email to  "+email.ToString() ;
 			}
 				
 

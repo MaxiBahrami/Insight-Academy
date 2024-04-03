@@ -13,6 +13,9 @@ using System.Net;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
 using System.Security.Claims;
+using Microsoft.Extensions.Logging;
+using Google.Cloud.RecaptchaEnterprise.V1;
+using Google.Api.Gax.ResourceNames;
 
 namespace InsightAcademy.Controllers
 {
@@ -41,30 +44,40 @@ namespace InsightAcademy.Controllers
         [HttpPost]
         public async Task<IActionResult> Signup(UserDto user)
         {
-            if (ModelState.IsValid)
+            if (user.Email !="" && user.Password!=""&& user.FullName!="" && user.Role!=0)
             {
-                try
+                var dbUser = _unitOfWork.Repository.GetQueryable<User>()
+                               .FirstOrDefault(u => u.Email == user.Email);
+                if (dbUser == null)
                 {
-                    User Userentity= _usershelper.DtotoEntity(user);
-                    Userentity.CreationDate= DateTime.Now;
-                    Userentity.CreatedBy = 1;
-                    await _unitOfWork.Repository.AddAsync(Userentity);
-                    await _unitOfWork.Repository.CompleteAsync();
-                    
-                    return RedirectToAction("Login", "Authentication");
+                    try
+                    {
+                        User Userentity = _usershelper.DtotoEntity(user);
+                        Userentity.CreationDate = DateTime.Now;
+                        Userentity.CreatedBy = 1;
+                        await _unitOfWork.Repository.AddAsync(Userentity);
+                        await _unitOfWork.Repository.CompleteAsync();
+                        TempData["message"] = user.Email + " Sign Up Successfully Log As";
+                        return RedirectToAction("Login", "Authentication");
+                    }
+                    catch (Exception ex)
+                    {
+                        // Log the exception for further investigation
+                        Console.WriteLine($"Error occurred during signup: {ex}");
+                        TempData["message"] = "Error Occurred";
+                        return RedirectToAction("Index", "Authentication");
+                    }
                 }
-                catch (Exception ex)
+                else
                 {
-                    // Log the exception for further investigation
-                    Console.WriteLine($"Error occurred during signup: {ex}");
-
-                    return View("ErrorOccurred");
+                    TempData["message"] =user.Email+ " Already Exits! Please LogIn ...";
+                    return RedirectToAction("Login", "Authentication");
                 }
             }
             else
             {
-                // Return a JSON response indicating validation errors
-                return new JsonResult("Please fill all the required fields.");
+                TempData["message"] =" Please fill all the required fields.";
+                return RedirectToAction("Index", "Authentication");              
             }
         }
         public IActionResult Login()
@@ -74,12 +87,14 @@ namespace InsightAcademy.Controllers
         [HttpPost]
         public IActionResult Login(User user)
         {
-            try
+			string message = "";
+			try
             {
                 if (user.Email == null && user.Password==null)
                 {
                     ModelState.AddModelError("InvalidRequest", "Invalid Client Request");
-                    return View(user);
+					message = "Invalid Client Request";
+					return View(user);
                 }
 
                 var dbUser = _unitOfWork.Repository.GetQueryable<User>()
@@ -105,32 +120,41 @@ namespace InsightAcademy.Controllers
                         HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, claimsPrincipal);
                         if (dbUser.Role == eRole.Admin)
                         {
-                            return RedirectToAction("Index", "Admin");
+                            message = "LogIn As Admin";
+							TempData["message"] = message;
+							return RedirectToAction("Index", "Admin");
                         }
                         else if(dbUser.Role == eRole.Student)
                         {
-                            return RedirectToAction("Index", "Student");
+                            message = "LogIn As Student";
+							TempData["message"] = message;
+							return RedirectToAction("Index", "Student");
                         }
                         else if (dbUser.Role == eRole.Teacher)
                         {
-                            return RedirectToAction("Index", "Teacher");
+                            message = "LogIn As Teacher";
+							TempData["message"] = message;
+							return RedirectToAction("Index", "Teacher");
                         }
-
-                        return RedirectToAction("Login", "Authentication");
-                    }
+						
+						
+						return RedirectToAction("Login", "Authentication");
+					}
                 }
                 else
                 {
                     ModelState.AddModelError("Unauthorized", "Invalid email or password.");
-                }
+					message = "Invalid email or password.";
+				}
             }
             catch (Exception ex)
             {
-                ModelState.AddModelError("ServerError", $"Error logging in user: {ex.Message}");
-            }
 
-            // If any errors occurred, return the view with the ModelState containing the error messages
-            return View(user);
+                ModelState.AddModelError("ServerError", $"Error logging in user: {ex.Message}");
+				message =( $"ServerError Error logging in user: {ex.Message}").ToString();
+			}
+			TempData["message"] = message;
+			return View(user);
 
         }
         public IActionResult ResetPassword(int userid)
@@ -138,14 +162,20 @@ namespace InsightAcademy.Controllers
             User user = _unitOfWork.Repository.GetQueryable<User>().Where(m => m.Id == userid).FirstOrDefault();
              if(user != null)
             {
-            return View(user.Id);
+                TempData["message"] = "Enter New Cridentials";
+                return View(user.Id);
 
             }
-             else { return RedirectToAction("Lostpassword", "Authentication"); }
+             else {
+                TempData["message"] = "No User Exiting ";
+                return RedirectToAction("Lostpassword", "Authentication");
+            }
         }
         public IActionResult UpdateNewPassword(int userid, string NewPassword)
         {
-			User user = _unitOfWork.Repository.GetQueryable<User>().Where(m=>m.Id==userid).FirstOrDefault();
+            var message = "";
+          
+            User user = _unitOfWork.Repository.GetQueryable<User>().Where(m=>m.Id==userid).FirstOrDefault();
 
 			if (user != null)
 			{
@@ -156,7 +186,10 @@ namespace InsightAcademy.Controllers
 				{
                     // Save the changes to persist the updated password
                     _unitOfWork.Repository.CompleteAsync();
-				}
+                    message = "Password Updated LogIn with New Cridentials ";
+                    TempData["message"] = message;
+                    return RedirectToAction("Login");
+                }
 				catch (Exception ex)
 				{
 					// Handle any potential exceptions during the save operation
@@ -166,12 +199,11 @@ namespace InsightAcademy.Controllers
 			}
 			else
 			{
-				// Handle the case where the user with the specified ID does not exist
-				Console.WriteLine("User not found.");
-				// You can throw an exception or handle it according to your application's logic
+                message = "User not found.";
+             
 			}
 
-			return RedirectToAction("Login");
+			return RedirectToAction("Lostpassword");
         }
         public IActionResult Lostpassword()
         {
@@ -181,27 +213,71 @@ namespace InsightAcademy.Controllers
 
             return View();
         }
-        public IActionResult Recoverpassword(string email)
-        {
-           var validemail= _unitOfWork.Repository.GetQueryable<User>().Where(e=>e.Email == email).FirstOrDefault();
-			if (validemail != null)
+		[HttpPost]
+		public IActionResult Recoverpassword(string email, string recaptchaToken)
+		{
+			// Verify the reCAPTCHA response
+			bool captchaVerified = VerifyRecaptcha(recaptchaToken);
+			if (captchaVerified)
 			{
-              var message=  _stmpServices.sendStmpEmail(email, validemail.Id);
-
-                return RedirectToAction("Login");
+				var validemail = _unitOfWork.Repository.GetQueryable<User>().Where(e => e.Email == email).FirstOrDefault();
+				if (validemail != null)
+				{
+					var message = _stmpServices.sendStmpEmail(email, validemail.Id);
+					TempData["message"] = message;
+					return RedirectToAction("Login");
+				}
+				else
+				{
+					TempData["message"] = "User Not found...";
+					return RedirectToAction("Lostpassword");
+				}
 			}
-			else
-			{
-				return RedirectToAction("Lostpassword");
-			}
+            else
+            {
+			TempData["message"] = "reCAPTCHA verification failed. Please try again";
 
+            }
+			return RedirectToAction("Lostpassword", "Authentication");
 		}
-		public IActionResult Signout()
+
+		public bool VerifyRecaptcha(string token)
+		{
+			string secretKey = "6LdkiKwpAAAAANyp08POHUeI0BJxwFy7tHpvG0Z7";
+			string verificationUrl = $"https://www.google.com/recaptcha/api/siteverify?secret={secretKey}&response={token}";
+
+			using (var httpClient = new HttpClient())
+			{
+				var httpResponse = httpClient.GetAsync(verificationUrl).Result;
+				if (httpResponse.IsSuccessStatusCode)
+				{
+					var responseContent = httpResponse.Content.ReadAsStringAsync().Result;
+					dynamic verificationResult = Newtonsoft.Json.JsonConvert.DeserializeObject(responseContent);
+					return (bool)verificationResult.success;
+				}
+				else
+				{
+					// Handle HTTP error
+					return false;
+				}
+			}
+		}
+
+        public IActionResult Signout()
         {
             _authService.ClearHttpContextItems();
             HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+           var  message = "LogOut Successfully";
+            TempData["message"] = message;
             return RedirectToAction("Login", "Authentication");
         }
+        [HttpPost]
+        public IActionResult SetMessage(string message)
+        {
+            TempData["Role"] = message;
+            return Ok(); 
+        }
+
 
     }
 }

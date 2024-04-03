@@ -1,11 +1,11 @@
-﻿<link href="~/css/customcss.css" rel="stylesheet" />
+﻿
 <div class="tu-main-login">
 		<div class="tu-login-left">
 			<strong>
-				<a href="/"><img src="images/login/logo_white.png" alt="images"></a>
+				<a href="/"><img src="~/images/login/logo_white.png" alt="images"></a>
 			</strong>
 			<figure>
-				<img src="images/login/img-01.png" alt="images">
+				<img src="~/images/login/img-01.png" alt="images">
 			</figure>
 			<div class="tu-login-left_title">
 				<h2>Yes! we’re making progress</h2>
@@ -17,7 +17,7 @@
 				<h2>Welcome!</h2>
 				<h3>It’s really nice to see you</h3>
 			</div>
-        <form class="tu-themeform tu-login-form signupform" enctype="multipart/form-data" asp-controller="Authentication" asp-action="Signup">
+        <form autocomplete="off" class="tu-themeform tu-login-form signupform" enctype="multipart/form-data" asp-controller="Authentication" asp-action="Signup">
             <fieldset>
                 <div class="tu-themeform__wrap">
                     <div class="form-group-wrap">
@@ -65,7 +65,7 @@
                         <!-- Password -->
                         <div class="form-group">
                             <div class="tu-placeholderholder">
-                                <input id="userpassword" type="password" class="form-control" required="" placeholder="Password" name="Password">
+                                <input id="userpassword" type="password" class="form-control userpassword" required="" placeholder="Password" name="Password">
                                 <div class="tu-placeholder">
                                     <span>Password</span>
                                     <em>*</em>
@@ -82,12 +82,28 @@
                         <!-- Role -->
                         <div class="form-group">
                             <div class="tu-placeholderholder">
-                                <select class="form-control" required="" name="Role">
-                                    <option value="">Select Role</option>
-                                    <option value="10">Student</option>
-                                    <option value="20">Teacher</option>
-                                    <option value="30">Admin</option>
-                                </select>                           
+                                 <select class="form-control" required="" name="Role">
+                                 <option value="">Select Role</option>
+                                    @{
+                                        var role = TempData["Role"] != null ? TempData["Role"].ToString() : null;
+                                    }
+                                    @if (role == "10")
+                                    {
+                                        <option value="10" selected>Student</option>
+                                        <option value="20">Teacher</option>
+                                    }
+                                    else if (role == "20")
+                                    {
+                                        <option value="10">Student</option>
+                                        <option value="20" selected>Teacher</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="10">Student</option>
+                                        <option value="20">Teacher</option>
+                                    }
+                                </select>
+                                
                             </div>
 
                         </div>
@@ -95,27 +111,27 @@
                         <!-- Phone -->
                         <div class="form-group">
                             <div class="tu-placeholderholder">
-                                <input type="text" class="form-control" required="" placeholder="Phone" name="Phone">
+                                <input type="text" class="form-control" placeholder="Phone (Optional)" name="Phone">
                                 <div class="tu-placeholder">
-                                    <span>Phone</span>                                    
+                                    <span>Phone (Optional)</span>
                                 </div>
                             </div>
                         </div>
                         <!-- Website -->
                         <div class="form-group">
                             <div class="tu-placeholderholder">
-                                <input type="text" class="form-control" required="" placeholder="Website" name="Website">
+                                <input type="text" class="form-control"  placeholder="Website (Optional)" name="Website">
                                 <div class="tu-placeholder">
-                                    <span>Website</span>
+                                    <span>Website (Optional)</span>
                                    
                                 </div>
                             </div>
                         </div>
                         <div class="form-group">
                             <div class="tu-placeholderholder">
-                                <input type="text" class="form-control" required="" placeholder="Street Address" name="StreetAddress">
+                                <input type="text" class="form-control" placeholder="Street Address (Optional)" name="StreetAddress">
                                 <div class="tu-placeholder">
-                                    <span>Street Address</span>
+                                    <span>Street Address (Optional)</span>
                                     
                                 </div>
                             </div>
@@ -123,9 +139,9 @@
                         <!-- City -->
                         <div class="form-group">
                             <div class="tu-placeholderholder">
-                                <input type="text" class="form-control" required="" placeholder="City" name="City">
+                                <input type="text" class="form-control" placeholder="City (Optional)" name="City">
                                 <div class="tu-placeholder">
-                                    <span>City</span>
+                                    <span>City (Optional)</span>
                                   
                                 </div>
                             </div>
@@ -133,9 +149,9 @@
                         <!-- Country -->
                         <div class="form-group">
                             <div class="tu-placeholderholder">
-                                <input type="text" class="form-control" required="" placeholder="Country" name="Country">
+                                <input type="text" class="form-control" placeholder="Country (Optional)" name="Country">
                                 <div class="tu-placeholder">
-                                    <span>Country</span>
+                                    <span>Country (Optional)</span>
                                  
                                 </div>
                             </div>
@@ -154,99 +170,9 @@
                 </div>
             </fieldset>
         </form>
-
+        <a class="nav-link" asp-controller="Authentication" asp-action="Login">Already Have an account ! LogIn</a>
 		</div>
 	</div>
 
 
- <script>
-    $(document).ready(function() {
-        var myInput = document.getElementById("userpassword");
-        var letter = document.getElementById("letter");
-        var capital = document.getElementById("capital");
-        var number = document.getElementById("number");
-        var specialchar = document.getElementById("specialchar");
-        var length = document.getElementById("length");
-        $('#userpassword').on('input', function () {
-            // Validate lowercase letters
-            var lowerCaseLetters = /[a-z]/g;
-            if (myInput.value.match(lowerCaseLetters)) {
-                letter.classList.remove("invalid");
-                letter.classList.add("valid");
-            } else {
-                letter.classList.remove("valid");
-                letter.classList.add("invalid");
-            }
-            // Validate capital letters
-            var upperCaseLetters = /[A-Z]/g;
-            if (myInput.value.match(upperCaseLetters)) {
-                capital.classList.remove("invalid");
-                capital.classList.add("valid");
-            } else {
-                capital.classList.remove("valid");
-                capital.classList.add("invalid");
-            }
-            // Validate numbers
-            var numbers = /[0-9]/g;
-            if (myInput.value.match(numbers)) {
-                number.classList.remove("invalid");
-                number.classList.add("valid");
-            } else {
-                number.classList.remove("valid");
-                number.classList.add("invalid");
-            }
-            var numbersAndSpecialChars = @Html.Raw("/[@#$%^&*!]/g"); // Include special characters you want to allow
 
-            if (myInput.value.match(numbersAndSpecialChars)) {
-                specialchar.classList.remove("invalid");
-                specialchar.classList.add("valid");
-            } else {
-                specialchar.classList.remove("valid");
-                specialchar.classList.add("invalid");
-            }
-   
-
-            // Validate length
-            if (myInput.value.length >= 8) {
-                length.classList.remove("invalid");
-                length.classList.add("valid");
-            } else {
-                length.classList.remove("valid");
-                length.classList.add("invalid");
-            }
-        });
-
-        $('#useremail').on('input', function() {
-            var email = $(this).val();
-            console.log(email);
-            if (!isValidEmail(email)) {
-                $('#emailError').show();
-            } else {
-                $('#emailError').hide();
-            }
-        });
-        myInput.onfocus = function () {
-            document.getElementById("message").style.display = "block";
-        }
-        myInput.onblur = function () {
-            document.getElementById("message").style.display = "none";
-        }
-
-        function isValidEmail(email) {
-            var regexPattern = '@Html.Raw("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$")';
-            var regex = new RegExp(regexPattern);
-            return regex.test(email);
-        }
-
-      
-
-      
-    });
-    function previewProfileImage(input) {
-        var reader = new FileReader();
-        reader.onload = function (e) {
-            document.getElementById('profileimage').src = e.target.result;
-        }
-        reader.readAsDataURL(input.files[0]); // convert to base64 string
-    }
-</script>

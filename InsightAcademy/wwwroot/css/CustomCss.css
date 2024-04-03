@@ -13,6 +13,28 @@
         padding: 10px 35px;
         font-size: 18px;
     }
+.popover-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 9999;
+}
+
+.alert-popover {
+    max-width: 300px;
+    color: #ffffff;
+    background-color: #6A307D;
+    padding: 40px; /* Ensure the close button is positioned relative to this container */
+}
+
+.btn-close {
+    position: absolute;
+    top: 0;
+    right: 0;
+    color: #ffffff;
+    padding: 0.5rem 0.5rem; /* Adjust as needed */
+    font-size: 0.75rem; /* Adjust as needed */
+}
 
 /* Add a green text color and a checkmark when the requirements are right */
 .valid {

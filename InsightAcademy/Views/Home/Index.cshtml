@@ -14,9 +14,11 @@
                                     <span>Start from here</span>
                                     <img src="~/images//knob_line.svg" alt="img">
                                 </div>
-                                <a href="signup.html" class="tu-primbtn tu-primbtn-gradient"><span>Start as student</span><i class="icon icon-chevron-right"></i></a>
+                            <a id="studentLink" class="tu-primbtn tu-primbtn-gradient" data-controller="Authentication" data-action="Index"><span>Start as student</span><i class="icon icon-chevron-right"></i></a>
                             </li>
-                            <li><a href="signup.html" class="tu-secbtn"><span>Join as Instructor</span><em>It’s Free!</em></a></li>
+                            <li>
+                            <a id="instructorLink" class="tu-secbtn" data-controller="Authentication" data-action="Index"><span>Join as Instructor</span><em>It’s Free!</em></a>
+                        </li>
                         </ul>
                     </div>
                 </div>

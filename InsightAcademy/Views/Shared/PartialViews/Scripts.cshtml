@@ -1,5 +1,7 @@
 ﻿<!-- Include jQuery -->
 <script src="~/js/vendor/jquery.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 
 <!-- Include other libraries -->
 <script src="~/js/vendor/popper-core.js"></script>
@@ -19,9 +21,177 @@
 <script src="~/js/vendor/jRate.js"></script>
 <script src="~/js/vendor/jquery.mCustomScrollbar.concat.min.js"></script>
 <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.js"></script>
+<script src="https://www.google.com/recaptcha/api.js?render=explicit&hl=en&onload=onRecaptchaLoad"></script>
+<script src="https://www.google.com/recaptcha/api.js"></script>
+<!-- Include reCAPTCHA API script -->
+<script src="https://www.google.com/recaptcha/api.js?render=6LdkiKwpAAAAAL5Y_wOfrcJEJbWON7mqCo_9bCa2"></script>
+
 
 <!-- Include your custom script -->
 <script src="~/js/main.js"></script>
+<script>
+	$(document).ready(function () {
+		var message = '@TempData["message"]'; // Get message from TempData
+		if (message) {
+			$('.alert').fadeIn(); // Show the alert
+
+			setTimeout(function () {
+				$('.alert').fadeOut(); // Hide the alert
+			}, 3000);
+            ViewBag.Message = null;
+		}
+	});
+</script>
+
+<script>
+    // Function to be called when reCAPTCHA is submitted
+    function onRecaptchaSubmit(token) {
+        document.getElementById('recaptchaToken').value = token;
+    }
+</script>
+<script>
+    $(document).ready(function () {
+        // Click listener for student link
+        $('#studentLink').click(function (e) {
+            e.preventDefault(); // Prevent default link behavior
+
+            // Initialize ViewBag data via AJAX
+            $.ajax({
+                url: '@Url.Action("SetMessage", "Authentication")',
+                type: 'POST',
+                data: { message: '10' },
+                success: function (response) {
+                    // Redirect to User controller's Index action
+                    window.location.href = $('#studentLink').data('controller') + '/' + $('#studentLink').data('action');
+                }
+            });
+        });
+
+        // Click listener for instructor link
+        $('#instructorLink').click(function (e) {
+            e.preventDefault(); // Prevent default link behavior
+
+            // Initialize ViewBag data via AJAX
+            $.ajax({
+                url: '@Url.Action("SetMessage", "Authentication")',
+                type: 'POST',
+                data: { message: '20' },
+                success: function (response) {
+                    // Redirect to Teacher controller's Index action
+                    window.location.href = $('#instructorLink').data('controller') + '/' + $('#instructorLink').data('action');
+                }
+            });
+        });
+    });
+</script>
+
+<script>
+    $(document).ready(function () {
+        $('#signupForm').on('submit', function (event) {
+            var newPassword = $('#userpassword').val();
+            var confirmPassword = $('#confirmPassword').val();
+
+            if (newPassword !== confirmPassword) {
+                event.preventDefault(); // Prevent form submission
+                $('#passwordMismatchError').css('display', 'block'); // Show error message
+            } else {
+                $('#passwordMismatchError').css('display', 'none'); // Hide error message if passwords match
+            }
+        });
+
+    });
+</script>
+
+
+<script>
+    $(document).ready(function () {
+        var myInput = document.getElementById("userpassword");
+        var letter = document.getElementById("letter");
+        var capital = document.getElementById("capital");
+        var number = document.getElementById("number");
+        var specialchar = document.getElementById("specialchar");
+        var length = document.getElementById("length");
+        $('#userpassword').on('input', function () {
+            // Validate lowercase letters
+            var lowerCaseLetters = /[a-z]/g;
+            if (myInput.value.match(lowerCaseLetters)) {
+                letter.classList.remove("invalid");
+                letter.classList.add("valid");
+            } else {
+                letter.classList.remove("valid");
+                letter.classList.add("invalid");
+            }
+            // Validate capital letters
+            var upperCaseLetters = /[A-Z]/g;
+            if (myInput.value.match(upperCaseLetters)) {
+                capital.classList.remove("invalid");
+                capital.classList.add("valid");
+            } else {
+                capital.classList.remove("valid");
+                capital.classList.add("invalid");
+            }
+            // Validate numbers
+            var numbers = /[0-9]/g;
+            if (myInput.value.match(numbers)) {
+                number.classList.remove("invalid");
+                number.classList.add("valid");
+            } else {
+                number.classList.remove("valid");
+                number.classList.add("invalid");
+            }
+            var numbersAndSpecialChars = @Html.Raw("/[@#$%^&*!]/g"); // Include special characters you want to allow
+
+            if (myInput.value.match(numbersAndSpecialChars)) {
+                specialchar.classList.remove("invalid");
+                specialchar.classList.add("valid");
+            } else {
+                specialchar.classList.remove("valid");
+                specialchar.classList.add("invalid");
+            }
+
+
+            // Validate length
+            if (myInput.value.length >= 8) {
+                length.classList.remove("invalid");
+                length.classList.add("valid");
+            } else {
+                length.classList.remove("valid");
+                length.classList.add("invalid");
+            }
+        });
+
+        $('#useremail').on('input', function () {
+            var email = $(this).val();
+            console.log(email);
+            if (!isValidEmail(email)) {
+                $('#emailError').show();
+            } else {
+                $('#emailError').hide();
+            }
+        });
+
+        myInput.onfocus = function () {
+            document.getElementById("message").style.display = "block";
+        }
+        myInput.onblur = function () {
+            document.getElementById("message").style.display = "none";
+        }
+
+        function isValidEmail(email) {
+            var regexPattern = '@Html.Raw("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$")';
+            var regex = new RegExp(regexPattern);
+            return regex.test(email);
+        }
 
 
 
+
+    });
+    function previewProfileImage(input) {
+        var reader = new FileReader();
+        reader.onload = function (e) {
+            document.getElementById('profileimage').src = e.target.result;
+        }
+        reader.readAsDataURL(input.files[0]); // convert to base64 string
+    }
+</script>
