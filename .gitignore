@@ -337,3 +337,4 @@ ASALocalRun/
 
 # BeatPulse healthcheck temp database
 healthchecksdb
+/InsightAcademy/Views/Shared/_AdminLayout.cshtml.css
