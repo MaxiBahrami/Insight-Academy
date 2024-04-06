@@ -44,7 +44,7 @@ namespace InsightAcademy.Controllers
         [HttpPost]
         public async Task<IActionResult> Signup(UserDto user)
         {
-            if (user.Email !="" && user.Password!=""&& user.FullName!="" && user.Role!=0)
+            if (user.Email !="" && user.Password!=""&& user.firstName!="" && user.Role!=0)
             {
                 var dbUser = _unitOfWork.Repository.GetQueryable<User>()
                                .FirstOrDefault(u => u.Email == user.Email);
@@ -112,7 +112,7 @@ namespace InsightAcademy.Controllers
                         var claimss = new List<Claim>
                         {
                          new Claim(ClaimTypes.NameIdentifier, dbUser.Id.ToString()),
-                         new Claim(ClaimTypes.Name, dbUser.FullName),
+                       new Claim(ClaimTypes.Name, dbUser.LastName),
                          new Claim(ClaimTypes.Role, dbUser.Role.ToString())
                          };
                         var claimsIdentity = new ClaimsIdentity(claimss, CookieAuthenticationDefaults.AuthenticationScheme);
@@ -136,8 +136,6 @@ namespace InsightAcademy.Controllers
 							TempData["message"] = message;
 							return RedirectToAction("Index", "Teacher");
                         }
-						
-						
 						return RedirectToAction("Login", "Authentication");
 					}
                 }
@@ -175,17 +173,19 @@ namespace InsightAcademy.Controllers
         {
             var message = "";
           
-            User user = _unitOfWork.Repository.GetQueryable<User>().Where(m=>m.Id==userid).FirstOrDefault();
+            User user = _unitOfWork.Repository.GetById<User>(asNoTracking: false, id: userid);
 
-			if (user != null)
+            if (user != null)
 			{
 				// Update the password property of the user entity
 				user.Password = NewPassword;
 
 				try
 				{
-                    // Save the changes to persist the updated password
+                    _unitOfWork.Repository.Update<User, int>(user);
+                    // Save changes to the database
                     _unitOfWork.Repository.CompleteAsync();
+                
                     message = "Password Updated LogIn with New Cridentials ";
                     TempData["message"] = message;
                     return RedirectToAction("Login");

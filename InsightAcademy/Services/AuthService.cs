@@ -29,8 +29,9 @@ namespace InsightAcademy.Services
 
         public string GenerateJwtToken(User user)
         {
-            _context.HttpContext.Items["UserId"] = "";
-            _context.HttpContext.Items["Createdby"] = "";
+
+            _context.HttpContext.Session.SetString("UserId", "");
+            _context.HttpContext.Session.SetString("Createdby", "");
             var claims = new[]
             {
                 new Claim(JwtRegisteredClaimNames.Sub, user.Email),
@@ -46,8 +47,9 @@ namespace InsightAcademy.Services
                 expires: expires,
                 signingCredentials: creds
             );
-            _context.HttpContext.Items["UserId"] = user.Id.ToString();
-            _context.HttpContext.Items["Createdby"] = user.CreatedBy.ToString();
+            _context.HttpContext.Session.SetString("UserId", user.Id.ToString());
+            _context.HttpContext.Session.SetString("Createdby", user.CreatedBy.ToString());        
+        
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
         public void ClearHttpContextItems()

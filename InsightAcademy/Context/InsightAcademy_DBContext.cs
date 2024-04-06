@@ -8,5 +8,7 @@ namespace InsightAcademy.Context
         public InsightAcademy_DBContext(DbContextOptions<InsightAcademy_DBContext>options):base(options) { }
 
         public DbSet<User> Users { get; set; }
+        public DbSet<TeacherProfile> TeacherProfile { get; set; }
+        public DbSet<TeacherEducation> TeacherEducation { get; set; }
     }
 }
