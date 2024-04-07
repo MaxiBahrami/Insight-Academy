@@ -128,13 +128,13 @@ namespace InsightAcademy.Controllers
                         {
                             message = "LogIn As Student";
 							TempData["message"] = message;
-							return RedirectToAction("Index", "Student");
+							return RedirectToAction("Profile", "Student");
                         }
                         else if (dbUser.Role == eRole.Teacher)
                         {
                             message = "LogIn As Teacher";
 							TempData["message"] = message;
-							return RedirectToAction("Index", "Teacher");
+							return RedirectToAction("Profile", "Teacher");
                         }
 						return RedirectToAction("Login", "Authentication");
 					}

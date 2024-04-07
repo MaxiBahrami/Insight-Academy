@@ -1,7 +1,9 @@
 ﻿using EasyRepository.EFCore.Generic;
 using InsightAcademy.Entities;
+using InsightAcademy.Helper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.IO;
 
 namespace InsightAcademy.Controllers
 {
@@ -10,9 +12,11 @@ namespace InsightAcademy.Controllers
     {
         private readonly IUnitOfWork _unitOfWork;
         public List<User> _users=new List<User>();
-        public AdminController(IUnitOfWork unitOfWork)
+        private readonly Usershelper _usershelper;
+        public AdminController(IUnitOfWork unitOfWork, Usershelper usershelper)
         {
-            _unitOfWork=unitOfWork;
+            _unitOfWork = unitOfWork;
+            _usershelper = usershelper;
         }
         public IActionResult Index()
         {
@@ -95,22 +99,51 @@ namespace InsightAcademy.Controllers
         [HttpPost]
         public IActionResult SaveUser(User user)
         {
-            if (ModelState.IsValid)
+            if (user.Email != "" && user.Password != "" && user.FirstName != "" && user.Role != 0)
             {
-                if (user.Id == 0)
+                user.ProfileImage = new byte[0];
+                if (user.Id== 0)
                 {
-                    _unitOfWork.Repository.Add(user);
+                    var dbUser = _unitOfWork.Repository.GetQueryable<User>()
+                            .FirstOrDefault(u => u.Email == user.Email);
+
+                    if (dbUser == null)
+                    {
+                        try
+                        {
+                            user.CreationDate = DateTime.Now;
+                            user.CreatedBy = 1;
+                            _unitOfWork.Repository.Add(user);
+                            _unitOfWork.Repository.Complete();
+                            TempData["message"] = user.Email + " User saved.";
+                        }
+                        catch (Exception ex)
+                        {
+                            // Log the exception for further investigation
+                            TempData["message"] = "Error Occurred in saving user: "+ex;
+                        }
+                    }
+                    else
+                    {
+                        TempData["message"] = user.Email + " Already Exits!";
+                    }
+                   
                 }
                 else
                 {
                     _unitOfWork.Repository.Update(user);
+                    _unitOfWork.Repository.Complete();
+
                 }
-                _unitOfWork.Repository.Complete();
                 return Json(new { success = true });
             }
-            return Json(new { success = false });
+            else
+            {
+                TempData["message"] = " Please fill all the required fields.";
+                return Json(new { success = false });
+            }
         }
-
+       
         [HttpPost]
         public IActionResult DeleteUser(int id)
         {
