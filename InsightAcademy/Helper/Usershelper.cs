@@ -10,7 +10,8 @@ namespace InsightAcademy.Helper
             return new User()
             {
                 Username = userDto.Username,
-                FullName= userDto.FullName,
+                FirstName= userDto.firstName,
+                LastName= userDto.lastName,
                 Email = userDto.Email,
                 Password = userDto.Password,
                 Role = userDto.Role,

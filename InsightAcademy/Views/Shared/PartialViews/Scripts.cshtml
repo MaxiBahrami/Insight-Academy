@@ -27,6 +27,36 @@
 <script src="https://www.google.com/recaptcha/api.js?render=6LdkiKwpAAAAAL5Y_wOfrcJEJbWON7mqCo_9bCa2"></script>
 
 
+<script>
+    $(document).ready(function () {
+        // Show corresponding section when a nav link is clicked
+        $("#personal-details-link").click(function () {
+            $(".section").hide(); // Hide all sections
+            $("#personal-details-section").show(); // Show personal details section
+        });
+
+        $("#contact-details-link").click(function () {
+            $(".section").hide();
+            $("#contact-details-section").show();
+        });
+
+        $("#education-link").click(function () {
+            $(".section").hide();
+            $("#education-section").show();
+        });
+
+        $("#subjects-link").click(function () {
+            $(".section").hide();
+            $("#subjects-section").show();
+        });
+
+        $("#media-gallery-link").click(function () {
+            $(".section").hide();
+            $("#media-gallery-section").show();
+        });
+    });
+</script>
+
 <!-- Include your custom script -->
 <script src="~/js/main.js"></script>
 <script>

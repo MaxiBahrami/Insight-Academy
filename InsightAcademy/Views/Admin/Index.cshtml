@@ -35,10 +35,10 @@
                     @foreach (var user in Model)
                     {
                         <tr>
-                            <td>@user.FullName</td>
-                            @if (user.IsDeleted)
-                            {
-                                <td class="text-muted">@user.Email</td>
+                            <td>@user.FirstName +""+@user.LastName</td>
+                        @if (user.IsDeleted)
+                        {
+                            <td class="text-muted">@user.Email</td>
 
                             }
                             else

@@ -17,13 +17,12 @@
     <link rel="stylesheet" href="~/css/main.css"> <!-- Adjust path if necessary -->
     <link rel="stylesheet" href="~/css/jquery.mCustomScrollbar.min.css">
 	<link href="~/css/customcss.css" rel="stylesheet" />
-
 </head>
 <body>
     <div class="page-wrapper container">
         @await Html.PartialAsync("~/Views/Shared/PartialViews/Header.cshtml")
         <div role="main" class="page-content">  
-           @await Html.PartialAsync("~/Views/Shared/PartialViews/_AlterMessage.cshtml")
+           @await Html.PartialAsync("~/Views/Shared/PartialViews/_AlterMessage.cshtml")        
             @RenderBody()
         </div>
         @await Html.PartialAsync("~/Views/Shared/PartialViews/Footer.cshtml")
